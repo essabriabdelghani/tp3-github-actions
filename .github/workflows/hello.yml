@@ -1,3 +1,4 @@
+
 name: Premier workflow CI
 
 on:
@@ -11,3 +12,12 @@ jobs:
     steps:
       - name: Afficher un message
         run: echo "Hello from GitHub Actions"
+
+      - name: Afficher les informations du runner
+        run: |
+          echo "=== Version de Python ==="
+          python3 --version
+          echo "=== Repertoire courant ==="
+          pwd
+          echo "=== Liste des fichiers ==="
+          ls -la
