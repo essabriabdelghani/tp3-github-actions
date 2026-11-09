@@ -24,5 +24,29 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
 
-      - name: Lancer les tests avec couverture
-        run: python -m pytest -v --cov=app --cov-report=term-missing
+      - name: Lancer les tests avec couverture (seuil 80%)
+        run: python -m pytest -v --cov=app --cov-report=term-missing --cov-fail-under=80
+
+  seuils:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        seuil: [50, 70, 80, 90, 100]
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Test seuil ${{ matrix.seuil }}%
+        run: python -m pytest --cov=app --cov-report=term-missing --cov-fail-under=${{ matrix.seuil }}
